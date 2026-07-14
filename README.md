@@ -1,215 +1,377 @@
-<div align="center">
+# FORCEUI
 
-<img alt="vue3-element-admin-js" width="80" src="./src/assets/images/logo.png">
+FORCEUI là giao diện quản trị nội bộ được xây dựng bằng Vue 3, Vite, JavaScript và Element Plus. Dự án được tùy biến từ nền tảng admin template để phục vụ hệ thống backend thực tế của FORCE, tập trung trước mắt vào đăng nhập, xác thực người dùng và menu động theo dữ liệu trả về từ API.
 
-# vue3-element-admin-js
+Repository GitHub:
 
-**Vue3 + Vite + JavaScript 企业级后台管理前端**
+```txt
+https://github.com/Jun-Da-Liu/FORCEUI.git
+```
 
-[![Vue](https://img.shields.io/badge/Vue-3.5.30-brightgreen.svg)](https://vuejs.org/)
-[![Vite](https://img.shields.io/badge/Vite-8.0.0-green.svg)](https://vitejs.dev/)
-[![Element Plus](https://img.shields.io/badge/Element%20Plus-2.13.5-blue.svg)](https://element-plus.org/)
-[![Gitee Star](https://gitee.com/youlaiorg/vue3-element-admin-js/badge/star.svg)](https://gitee.com/youlaiorg/vue3-element-admin-js/stargazers)
-[![GitHub Star](https://img.shields.io/github/stars/youlaitech/vue3-element-admin-js?style=social)](https://github.com/youlaitech/vue3-element-admin-js)
-[![GitCode Star](https://gitcode.com/youlai/vue3-element-admin-js/star/badge.svg)](https://gitcode.com/youlai/vue3-element-admin-js/stargazers)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+## Mục tiêu dự án
 
-</div>
+Dự án này dùng làm frontend cho hệ thống quản trị, trong đó quyền truy cập và menu không còn lấy từ mock data mà lấy trực tiếp từ backend.
 
-![](https://foruda.gitee.com/images/1708618984641188532/a7cca095_716974.png "rainbow.png")
+Các phần đã được tùy biến chính:
 
-<div align="center">
+- Đăng nhập bằng API thật.
+- Lấy thông tin người dùng hiện tại từ backend.
+- Sinh menu động từ API `/api/v1/menus/my`.
+- Bỏ mock API cũ của template.
+- Tạm tắt captcha vì backend/chức năng captcha chưa phát triển.
+- Tạm tắt các module backend chưa có API như SSE, notice, analytics và chỉnh sửa profile nâng cao.
+- Hỗ trợ đa ngôn ngữ: English, 简体中文, Tiếng Việt.
+- Thêm tự động đăng xuất sau 30 phút không hoạt động.
+- Chuẩn hóa icon cho menu động.
+- Node `Login Out` trong menu động được xử lý như chức năng đăng xuất.
 
-[🖥️ 在线预览](https://vue.youlai.tech) | [📲 移动端预览](https://app.youlai.tech) | [📖 文档](https://www.youlai.tech/vue3-element-admin)
+## Công nghệ sử dụng
 
-</div>
+| Thành phần | Công nghệ |
+| --- | --- |
+| Framework | Vue 3 |
+| Build tool | Vite |
+| Ngôn ngữ | JavaScript |
+| UI framework | Element Plus |
+| State management | Pinia |
+| Router | Vue Router |
+| HTTP client | Axios |
+| Đa ngôn ngữ | Vue I18n |
+| Style | SCSS |
+| Package manager | pnpm |
 
-## 项目简介
+## Yêu cầu môi trường
 
-[vue3-element-admin-js](https://gitee.com/youlaiorg/vue3-element-admin-js) 基于 Vue3、Vite、JavaScript 和 Element-Plus 搭建的极简开箱即用企业级后台管理前端模板。 （配套 Java 后端 [youlai-boot](https://gitee.com/youlaiorg/youlai-boot) 和 Node 后端 [youlai-nest](https://gitee.com/youlaiorg/youlai-nest)）。
+Dự án yêu cầu Node.js theo cấu hình trong `package.json`:
 
-## 项目特色
+```txt
+Node.js ^20.19.0 hoặc >=22.12.0
+```
 
-- **简洁易用**：基于 [vue3-element-admin](https://gitee.com/youlaiorg/vue3-element-admin) 的 JavaScript 版本，适合快速开发。
-- **数据交互**： 支持 `Mock` 数据和[线上接口文档](https://www.apifox.cn/apidoc/shared-195e783f-4d85-4235-a038-eec696de4ea5)，并提供配套的 [Java](https://gitee.com/youlaiorg/youlai-boot) 和 [Node](https://gitee.com/youlaiorg/youlai-nest) 后端源码。
+Khuyến nghị:
 
-- **系统功能：** 提供用户管理、角色管理、菜单管理、部门管理、字典管理等功能模块。
-- **权限管理：** 支持动态路由、按钮权限、角色权限和数据权限等多种权限管理方式。
+- Node.js 20 LTS hoặc mới hơn.
+- pnpm.
+- Backend chạy ở port `5251` khi phát triển local.
 
-- **基础设施：** 提供国际化、多布局、暗黑模式、全屏、水印、接口文档和代码生成器等功能。
-- **持续更新**：项目持续开源更新，实时更新工具和依赖。
+## Cài đặt
 
-## 系统预览
-
-**PC 端**
-
-<table align="center">
-  <tr>
-    <td><img alt="PC预览1" width="400" src="./src/assets/images/preview/pc-01.png"></td>
-    <td><img alt="PC预览2" width="400" src="./src/assets/images/preview/pc-02.png"></td>
-  </tr>
-  <tr>
-    <td><img alt="PC预览3" width="400" src="./src/assets/images/preview/pc-03.png"></td>
-    <td><img alt="PC预览4" width="400" src="./src/assets/images/preview/pc-04.png"></td>
-  </tr>
-  <tr>
-    <td><img alt="PC预览5" width="400" src="./src/assets/images/preview/pc-05.png"></td>
-    <td><img alt="PC预览6" width="400" src="./src/assets/images/preview/pc-06.png"></td>
-  </tr>
-</table>
-
-**移动端**
-
-<table align="center">
-  <tr>
-    <td><img alt="APP预览1" width="200" src="./src/assets/images/preview/app-01.png"></td>
-    <td><img alt="APP预览2" width="200" src="./src/assets/images/preview/app-02.png"></td>
-    <td><img alt="APP预览3" width="200" src="./src/assets/images/preview/app-03.png"></td>
-    <td><img alt="APP预览4" width="200" src="./src/assets/images/preview/app-04.png"></td>
-  </tr>
-</table>
-
-## 生态矩阵
-
-**前端**
-
-| 项目 | 技术栈 | 说明 |
-|:-----|:-------|:-----|
-| [vue3-element-admin](https://gitee.com/youlaiorg/vue3-element-admin) | Vue 3 + Vite + TS + Element Plus | PC 管理前端（主推） |
-| [vue3-element-admin-js](https://gitee.com/youlaiorg/vue3-element-admin-js) | Vue 3 + Vite + JS + Element Plus | JavaScript 版本 |
-| [vue3-element-template](https://gitee.com/youlaiorg/vue3-element-template) | Vue 3 + Vite + TS + Element Plus | 精简模板 |
-| [youlai-app](https://gitee.com/youlaiorg/youlai-app) | Vue 3 + UniApp | 移动端 App |
-
-**后端**
-
-| 项目 | 技术栈 | 说明 |
-|:-----|:-------|:-----|
-| [youlai-boot](https://gitee.com/youlaiorg/youlai-boot) | Spring Boot + MyBatis-Plus | Java 后端（主推） |
-| [youlai-nest](https://gitee.com/youlaiorg/youlai-nest) | NestJS + TypeORM | Node.js |
-| [youlai-gin](https://gitee.com/youlaiorg/youlai-gin) | Go + Gorm | Go |
-| [youlai-django](https://gitee.com/youlaiorg/youlai-django) | Django + DRF | Python |
-| [youlai-think](https://gitee.com/youlaiorg/youlai-think) | ThinkPHP 8 | PHP |
-| [youlai-aspnet](https://gitee.com/youlaiorg/youlai-aspnet) | ASP.NET Core | C# |
-
-> **youlai-boot** 还提供以下变种和分支版本：[多租户](https://gitee.com/youlaiorg/youlai-boot-tenant)（Spring Boot 4）· [MyBatis-Flex](https://gitee.com/youlaiorg/youlai-boot-flex)（Spring Boot 4）· [Spring Boot 3](https://gitee.com/youlaiorg/youlai-boot/tree/spring-boot-3) · [PostgreSQL](https://gitee.com/youlaiorg/youlai-boot/tree/db-pg) · [多模块](https://gitee.com/youlaiorg/youlai-boot/tree/multi-module)
->
-> 六种后端共享同一套 **RESTful API 规范** 和 **数据库结构**，前端可无缝切换。
-
-## 项目文档
-
-| 文档名称     | 访问地址                                                                                                                           |
-| ------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
-| 项目 0 到 1  | [基于 Vue3 + Vite + Element-Plus 从0到1搭建后台管理系统](https://blog.csdn.net/u013737132/article/details/130191394)               |
-| 官方文档     | [https://www.youlai.tech/vue3-element-admin/](https://www.youlai.tech/vue3-element-admin/)                                         |
-| 代码规范     | [ESLint V9 + Prettier + Stylelint + EditorConfig 约束和统一前端代码规范](https://youlai.blog.csdn.net/article/details/145608723)   |
-| 在线接口文档 | [https://www.apifox.cn/apidoc](https://www.apifox.cn/apidoc/shared-195e783f-4d85-4235-a038-eec696de4ea5)                           |
-
-## 项目启动
-
-- **环境准备**
-
-| 环境类型     | 版本要求                    | 下载链接                                                 |
-| ------------ | --------------------------- | -------------------------------------------------------- |
-| **开发工具** | Visual Studio Code (最新版) | [官方下载](https://code.visualstudio.com/Download)       |
-| **运行环境** | Node.js 18.x (推荐18.16.1)  | [中文镜像](https://npmmirror.com/mirrors/node/v18.16.1/) |
-
-> ⚠️ 注意：Node.js 20.6.0版本存在兼容性问题，请勿使用
-
-- **快速开始**
+Clone source:
 
 ```bash
-# 克隆代码
-git clone https://gitee.com/youlaiorg/vue3-element-admin.git
+git clone https://github.com/Jun-Da-Liu/FORCEUI.git
+cd FORCEUI
+```
 
-# 切换目录
-cd vue3-element-admin
+Cài dependencies:
 
-# 安装 pnpm
-npm install pnpm -g
-
-# 设置镜像源(可忽略)
-pnpm config set registry https://registry.npmmirror.com
-
-# 安装依赖
+```bash
 pnpm install
+```
 
-# 启动运行
+Chạy môi trường development:
+
+```bash
 pnpm run dev
 ```
 
-## 项目部署
+Mặc định frontend chạy tại:
 
-执行 `pnpm run build` 命令后，项目将被打包并生成 `dist` 目录。接下来，将 `dist` 目录下的文件上传到服务器 `/usr/share/nginx/html` 目录下，并配置 Nginx 进行反向代理。
+```txt
+http://localhost:3000
+```
+
+## Cấu hình môi trường
+
+File development chính:
+
+```txt
+.env.development
+```
+
+Cấu hình hiện tại:
+
+```env
+VITE_APP_PORT=3000
+VITE_APP_TITLE=Luu-Tuan-Dat
+VITE_APP_BASE_API=/dev-api
+VITE_APP_API_URL=http://127.0.0.1:5251
+VITE_APP_TENANT_ENABLED=false
+VITE_APP_SSE_ENABLED=false
+VITE_APP_NOTICE_ENABLED=false
+VITE_APP_ANALYTICS_ENABLED=false
+VITE_APP_IDLE_TIMEOUT_MINUTES=30
+VITE_APP_PROFILE_EDIT_ENABLED=false
+```
+
+Ý nghĩa các biến quan trọng:
+
+| Biến | Ý nghĩa |
+| --- | --- |
+| `VITE_APP_PORT` | Port chạy frontend local |
+| `VITE_APP_TITLE` | Tên hiển thị của hệ thống |
+| `VITE_APP_BASE_API` | Prefix API phía frontend khi chạy qua Vite proxy |
+| `VITE_APP_API_URL` | Địa chỉ backend thật |
+| `VITE_APP_SSE_ENABLED` | Bật/tắt kết nối SSE |
+| `VITE_APP_NOTICE_ENABLED` | Bật/tắt gọi API thông báo |
+| `VITE_APP_ANALYTICS_ENABLED` | Bật/tắt gọi API thống kê dashboard |
+| `VITE_APP_IDLE_TIMEOUT_MINUTES` | Số phút không hoạt động trước khi tự đăng xuất |
+| `VITE_APP_PROFILE_EDIT_ENABLED` | Bật/tắt các chức năng chỉnh sửa profile cần API bổ sung |
+
+## API backend đang sử dụng
+
+Backend local hiện được cấu hình tại:
+
+```txt
+http://127.0.0.1:5251
+```
+
+Frontend gọi API qua Vite proxy:
+
+```txt
+http://localhost:3000/dev-api
+```
+
+### Đăng nhập
+
+Endpoint:
+
+```txt
+POST /api/v1/auth/login
+```
+
+Response mong đợi:
+
+```json
+{
+  "code": "00000",
+  "data": {
+    "accessToken": "accessToken123",
+    "refreshToken": "refreshToken123",
+    "tokenType": "Bearer",
+    "expiresIn": 7200
+  },
+  "msg": "Login successful"
+}
+```
+
+Sau khi đăng nhập thành công, frontend lưu access token, lấy thông tin người dùng và sinh menu động.
+
+### Thông tin người dùng hiện tại
+
+Endpoint:
+
+```txt
+GET /api/v1/auth/me
+```
+
+Response mong đợi:
+
+```json
+{
+  "code": "00000",
+  "data": {
+    "userId": "5",
+    "username": "test123",
+    "nickname": "test123",
+    "avatar": "",
+    "roles": ["ADMIN"],
+    "perms": ["*:*:*"]
+  },
+  "msg": "Success"
+}
+```
+
+Nếu avatar rỗng, giao diện sẽ dùng icon mặc định.
+
+### Menu động của user
+
+Endpoint:
+
+```txt
+GET /api/v1/menus/my
+```
+
+Response là danh sách menu dạng cây. Frontend sẽ chuyển dữ liệu này thành route động.
+
+Ví dụ node:
+
+```json
+{
+  "menuId": 3,
+  "nodeId": 1003,
+  "nodeName": "GroupID Price",
+  "nodeUrl": "GroupID/GroupID_Price",
+  "nodeParent": 1001,
+  "nodeExpend": true,
+  "nodeCheck": true,
+  "nodeSort": 21,
+  "children": []
+}
+```
+
+Quy tắc xử lý:
+
+- Node cha dùng icon riêng theo nhóm.
+- Node con dùng icon chung để giao diện đồng bộ.
+- Node không có view thật sẽ mở bằng trang dynamic placeholder.
+- Node `Login Out` có chức năng đăng xuất.
+- Menu được sort theo `nodeSort`.
+
+## Captcha
+
+Captcha hiện đã được tạm bỏ/comment vì backend chưa phát triển chức năng này.
+
+Khi backend có API captcha, có thể bật lại phần captcha ở màn hình login và API auth tương ứng.
+
+## Các module đang tạm tắt
+
+Một số chức năng từ template gốc cần API riêng, hiện chưa có backend nên đã được tắt bằng biến môi trường để tránh lỗi `404`:
+
+| Module | Biến môi trường | Trạng thái |
+| --- | --- | --- |
+| SSE / online count | `VITE_APP_SSE_ENABLED=false` | Tắt |
+| Notice | `VITE_APP_NOTICE_ENABLED=false` | Tắt |
+| Analytics dashboard | `VITE_APP_ANALYTICS_ENABLED=false` | Tắt |
+| Profile edit nâng cao | `VITE_APP_PROFILE_EDIT_ENABLED=false` | Tắt |
+
+Khi backend phát triển xong API tương ứng, chỉ cần bật lại biến môi trường và kiểm tra mapping API.
+
+## Đa ngôn ngữ
+
+Dự án hiện hỗ trợ:
+
+- English
+- 简体中文
+- Tiếng Việt
+
+File ngôn ngữ nằm tại:
+
+```txt
+src/lang/package/
+```
+
+Các file chính:
+
+```txt
+src/lang/package/en.json
+src/lang/package/zh-cn.json
+src/lang/package/vi.json
+```
+
+## Tự động đăng xuất
+
+Dự án đã thêm cơ chế tự động đăng xuất sau thời gian không hoạt động.
+
+Cấu hình:
+
+```env
+VITE_APP_IDLE_TIMEOUT_MINUTES=30
+```
+
+Nếu người dùng không thao tác chuột, bàn phím, scroll hoặc touch trong 30 phút, hệ thống sẽ tự logout và quay về trang đăng nhập.
+
+## Build production
+
+Build source:
 
 ```bash
 pnpm run build
 ```
 
-以下是 Nginx 的配置示例：
+Sau khi build thành công, thư mục output là:
+
+```txt
+dist/
+```
+
+Preview bản build:
+
+```bash
+pnpm run preview
+```
+
+## Deploy
+
+Có thể deploy thư mục `dist/` lên Nginx hoặc static hosting.
+
+Ví dụ cấu hình Nginx cơ bản:
 
 ```nginx
 server {
-    listen      80;
-    server_name localhost;
+    listen 80;
+    server_name your-domain.com;
+
+    root /usr/share/nginx/html;
+    index index.html;
 
     location / {
-        root   /usr/share/nginx/html;
-        index  index.html index.htm;
+        try_files $uri $uri/ /index.html;
     }
 
-    # 反向代理配置
-    location /prod-api/ {
-        # 请将 api.youlai.tech 替换为您的后端 API 地址，并注意保留后面的斜杠 /
-        proxy_pass http://api.youlai.tech/;
+    location /api/ {
+        proxy_pass http://127.0.0.1:5251/api/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
 ```
 
-更多详细信息，请参考这篇文章：[Nginx 安装和配置](https://blog.csdn.net/u013737132/article/details/145667694)。
+Tùy môi trường production, cần chỉnh lại `VITE_APP_BASE_API` và proxy backend cho phù hợp.
 
-## 本地Mock
+## Lệnh thường dùng
 
-## 后端接口
+| Lệnh | Mục đích |
+| --- | --- |
+| `pnpm run dev` | Chạy frontend local |
+| `pnpm run build` | Build production |
+| `pnpm run preview` | Preview bản build |
+| `pnpm run lint` | Chạy eslint, prettier và stylelint |
+| `pnpm run lint:eslint` | Fix lỗi ESLint |
+| `pnpm run lint:prettier` | Format code |
+| `pnpm run lint:stylelint` | Fix style |
 
-> 如果您具备Java开发基础，按照以下步骤将在线接口转为本地后端接口，创建企业级前后端分离开发环境，助您走向全栈之路。
+## Cấu trúc thư mục quan trọng
 
-1. 获取基于 `Java` 和 `SpringBoot` 开发的后端 [youlai-boot](https://gitee.com/youlaiorg/youlai-boot.git) 源码。
-2. 根据后端工程的说明文档 [README.md](https://gitee.com/youlaiorg/youlai-boot#%E9%A1%B9%E7%9B%AE%E8%BF%90%E8%A1%8C) 完成本地启动。
-3. 修改 `.env.development` 文件中的 `VITE_APP_API_URL` 的值，将其从 https://api.youlai.tech 更改为 http://localhost:8989 即可。
+```txt
+src/
+├─ api/                 # Khai báo API request
+├─ assets/              # Hình ảnh, logo, static assets
+├─ components/          # Component dùng chung
+├─ composables/         # Logic tái sử dụng
+├─ constants/           # Hằng số hệ thống
+├─ enums/               # Enum cấu hình
+├─ lang/                # Đa ngôn ngữ
+├─ layouts/             # Layout chính, sidebar, toolbar
+├─ router/              # Router
+├─ stores/              # Pinia stores
+├─ styles/              # SCSS global
+├─ utils/               # Request, auth, storage, session timeout
+└─ views/               # Các trang giao diện
+```
 
-## 提交规范
+## Ghi chú phát triển
 
-执行 `pnpm run commit` 唤起 git commit 交互，根据提示完成信息的输入和选择。
+- Không dùng mock API cũ.
+- Backend cần chạy trước khi test login.
+- Nếu đổi dữ liệu menu backend, hãy logout/login lại để frontend sinh lại route động.
+- Nếu thêm node menu mới nhưng chưa có page thật, frontend vẫn có thể hiển thị bằng dynamic placeholder.
+- Nếu node menu cần mở trang thật, cần thêm view tương ứng trong `src/views`.
+- Nếu push GitHub gặp lỗi quyền, kiểm tra tài khoản GitHub đang đăng nhập hoặc SSH key.
 
-![](https://foruda.gitee.com/images/1687755823165218215/c1705416_716974.png)
+## Trạng thái hiện tại
 
-## 项目统计
+Phạm vi hiện tại của dự án tập trung vào:
 
-![](https://repobeats.axiom.co/api/embed/aa7cca3d6fa9c308fc659fa6e09af9a1910506c3.svg "Repobeats analytics image")
+- Login.
+- Token.
+- User info.
+- Dynamic menu.
+- Logout.
+- UI layout cơ bản.
+- Ngôn ngữ.
+- Session timeout.
 
-Thanks to all the contributors!
-
-[![contributors](https://contrib.rocks/image?repo=youlaitech/vue3-element-admin)](https://github.com/youlaitech/vue3-element-admin/graphs/contributors)
-
----
-
-<table align="center">
-  <tr>
-    <td align="center">
-      <img src="./src/assets/images/qr/wechat-offical.png" height="180" alt="公众号「有来技术」"><br>
-      <sub>公众号「有来技术」</sub>
-    </td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-    <td align="center">
-      <img src="./src/assets/images/qr/wechat-mp.jpg" height="180" alt="小程序「有来技术」"><br>
-      <sub>小程序「有来技术」</sub>
-    </td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-    <td align="center">
-      <img src="./src/assets/images/qr/wechat-personal.png" height="180" alt="添加作者微信"><br>
-      <sub>添加作者微信</sub>
-    </td>
-  </tr>
-</table>
-
-<p align="center"><em>技术交流 · 问题反馈 · 商务合作</em></p>
+Các module nghiệp vụ chi tiết sẽ được phát triển tiếp khi backend có API đầy đủ.

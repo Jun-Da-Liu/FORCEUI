@@ -148,8 +148,6 @@ server {
 
 ## Local Mock
 
-The project supports both online API and local mock API. By default, it uses the online API. If you want to switch to the mock API, modify the value of `VITE_MOCK_DEV_SERVER` in the `.env.development` file to `true`.
-
 ## Backend API
 
 > If you have a basic understanding of Java development, follow these steps to convert online API to local backend API and set up a full-stack development environment.
@@ -183,7 +181,6 @@ The project supports both online API and local mock API. By default, it uses the
 - [Building a Backend Management System from Scratch with Vue3, Vite, and Element-Plus](https://blog.csdn.net/u013737132/article/details/130191394)
 
 - [ESLint+Prettier+Stylelint+EditorConfig for Standardized and Unified Frontend Code Style](https://blog.csdn.net/u013737132/article/details/130190788)
-- [Git Commit Conventions with Husky, Lint-staged, Commitlint, Commitizen, and cz-git](https://blog.csdn.net/u013737132/article/details/130191363)
 
 ## Commit Conventions
 

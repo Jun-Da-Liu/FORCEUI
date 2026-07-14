@@ -1,4 +1,4 @@
-import { onMounted, ref } from "vue";
+import { getCurrentInstance, onMounted, ref } from "vue";
 import { useSse } from "./useSse";
 
 let globalInstance = null;
@@ -19,6 +19,7 @@ function createOnlineCountComposable() {
   };
 
   const initialize = () => {
+    if (unsubscribe) return;
     sse.connect();
     unsubscribe = sse.on("online-count", handleOnlineCountMessage);
   };
@@ -49,7 +50,7 @@ export function useOnlineCount(options = {}) {
     globalInstance = createOnlineCountComposable();
   }
 
-  if (autoInit) {
+  if (autoInit && getCurrentInstance()) {
     onMounted(() => {
       if (!globalInstance.isConnected.value) {
         globalInstance.initialize();

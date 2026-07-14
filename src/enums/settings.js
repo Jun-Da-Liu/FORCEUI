@@ -63,6 +63,7 @@ export const ComponentSize = {
 export const LanguageEnum = {
   ZH_CN: "zh-cn",
   EN: "en",
+  VI: "vi",
 };
 
 /**

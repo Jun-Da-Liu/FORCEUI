@@ -1,5 +1,6 @@
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 import en from "element-plus/es/locale/lang/en";
+import vi from "element-plus/es/locale/lang/vi";
 import { store } from "@/stores";
 import { DeviceEnum, SidebarStatus } from "@/enums";
 import { STORAGE_KEYS } from "@/constants";
@@ -31,7 +32,8 @@ export const useAppStore = defineStore("app", () => {
   const contentFullscreen = ref(false);
 
   /** Element Plus 当前语言包 */
-  const locale = computed(() => (language?.value === "en" ? en : zhCn));
+  const elementPlusLocales = { "zh-cn": zhCn, en, vi };
+  const locale = computed(() => elementPlusLocales[language.value] || zhCn);
 
   /** 切换侧边栏展开状态 */
   function toggleSidebar() {

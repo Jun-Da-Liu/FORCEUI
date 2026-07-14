@@ -4,14 +4,14 @@
       class="command-palette-trigger"
       role="button"
       tabindex="0"
-      aria-label="打开搜索面板"
+      :aria-label="t('commandPalette.open')"
       @click="open"
       @keydown.enter.prevent="open"
       @keydown.space.prevent="open"
     >
       <div class="command-palette-trigger__left">
         <div class="i-svg:search" />
-        <span class="command-palette-trigger__text">搜索菜单</span>
+        <span class="command-palette-trigger__text">{{ t("commandPalette.search") }}</span>
       </div>
       <kbd class="command-palette-trigger__kbd">Ctrl K</kbd>
     </div>
@@ -28,7 +28,7 @@
           ref="inputRef"
           v-model="keyword"
           class="command-palette-input"
-          placeholder="搜索菜单"
+          :placeholder="t('commandPalette.search')"
           @input="onSearch"
           @keydown="handleInputKeydown"
         >
@@ -41,7 +41,7 @@
                 class="i-svg:close"
                 role="button"
                 tabindex="0"
-                aria-label="关闭"
+                :aria-label="t('commandPalette.close')"
                 @click="close"
               />
             </div>
@@ -49,7 +49,7 @@
         </el-input>
 
         <div class="command-palette-results">
-          <div v-if="displayList.length === 0" class="command-palette-empty">没有搜索历史</div>
+          <div v-if="displayList.length === 0" class="command-palette-empty">{{ t("commandPalette.empty") }}</div>
 
           <ul v-else class="command-palette-list">
             <li
@@ -59,7 +59,7 @@
               @mouseenter="activeIndex = idx"
               @click="onGo(item)"
             >
-              <div class="command-palette-item__title">{{ item.title }}</div>
+              <div class="command-palette-item__title">{{ translateRouteTitle(item.title) }}</div>
               <div class="command-palette-item__path">{{ item.path }}</div>
             </li>
           </ul>
@@ -69,15 +69,15 @@
           <div class="command-palette-hint">
             <div class="command-palette-hint__key"><div class="i-svg:up" /></div>
             <div class="command-palette-hint__key"><div class="i-svg:down" /></div>
-            <span class="command-palette-hint__text">切换</span>
+            <span class="command-palette-hint__text">{{ t("commandPalette.navigate") }}</span>
           </div>
           <div class="command-palette-hint">
             <div class="command-palette-hint__key"><div class="i-svg:enter" /></div>
-            <span class="command-palette-hint__text">选择</span>
+            <span class="command-palette-hint__text">{{ t("commandPalette.select") }}</span>
           </div>
           <div class="command-palette-hint">
             <div class="command-palette-hint__key"><div class="i-svg:esc" /></div>
-            <span class="command-palette-hint__text">关闭</span>
+            <span class="command-palette-hint__text">{{ t("commandPalette.close") }}</span>
           </div>
         </div>
       </div>
@@ -88,6 +88,9 @@
 <script setup>
 import { computed } from "vue";
 import { useCommandPalette } from "./useCommandPalette";
+import { translateRouteTitle } from "@/lang/utils";
+
+const { t } = useI18n();
 
 const {
   visible,

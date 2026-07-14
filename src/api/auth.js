@@ -8,8 +8,6 @@ const AuthAPI = {
     const payload = {
       username: data.username,
       password: data.password,
-      captchaId: data.captchaId,
-      captchaCode: data.captchaCode,
     };
 
     // tenantId is optional — include only when provided (multi-tenant feature)
@@ -21,6 +19,9 @@ const AuthAPI = {
       url: `${AUTH_BASE_URL}/login`,
       method: "post",
       data: payload,
+      headers: {
+        Authorization: "no-auth",
+      },
     });
   },
 
@@ -45,21 +46,21 @@ const AuthAPI = {
     });
   },
 
-  /** 退出登录接口 */
-  logout() {
-    return request({
-      url: `${AUTH_BASE_URL}/logout`,
-      method: "delete",
-    });
-  },
+  // The backend logout endpoint is not available yet.
+  // logout() {
+  //   return request({
+  //     url: `${AUTH_BASE_URL}/logout`,
+  //     method: "delete",
+  //   });
+  // },
 
-  /** 获取验证码接口*/
-  getCaptcha() {
-    return request({
-      url: `${AUTH_BASE_URL}/captcha`,
-      method: "get",
-    });
-  },
+  // Captcha is not available on the backend yet.
+  // getCaptcha() {
+  //   return request({
+  //     url: `${AUTH_BASE_URL}/captcha`,
+  //     method: "get",
+  //   });
+  // },
 };
 
 export default AuthAPI;

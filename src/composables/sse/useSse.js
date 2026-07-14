@@ -1,4 +1,5 @@
 import { AuthStorage } from "@/utils/auth";
+import { appConfig } from "@/settings";
 
 export const SseConnectionState = {
   DISCONNECTED: "DISCONNECTED",
@@ -67,6 +68,8 @@ function createSseConnection(options = {}) {
   };
 
   const connect = () => {
+    if (!appConfig.sseEnabled) return;
+
     isManualDisconnect = false;
 
     if (connectionState.value !== SseConnectionState.DISCONNECTED) {
@@ -107,7 +110,9 @@ function createSseConnection(options = {}) {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
+          const error = new Error(`HTTP ${response.status}`);
+          error.status = response.status;
+          throw error;
         }
         connectionTimeoutTimer = clearTimer(connectionTimeoutTimer);
         connectionState.value = SseConnectionState.CONNECTED;
@@ -172,7 +177,12 @@ function createSseConnection(options = {}) {
         } else {
           logError("SSE 连接错误:", err);
           connectionState.value = SseConnectionState.DISCONNECTED;
-          scheduleReconnect();
+          if (err.status === 404) {
+            isManualDisconnect = true;
+            log("SSE 接口不存在，停止自动重试");
+          } else {
+            scheduleReconnect();
+          }
         }
       });
   };

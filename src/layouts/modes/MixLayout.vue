@@ -18,7 +18,7 @@
             <el-menu-item v-for="item in topMenuItems" :key="item.path" :index="item.path">
               <template v-if="item.meta">
                 <LayoutMenuIcon :icon="item.meta.icon" />
-                <span v-if="item.meta.title" class="ml-1">{{ item.meta.title }}</span>
+                <span v-if="item.meta.title" class="ml-1">{{ translateRouteTitle(item.meta.title) }}</span>
               </template>
             </el-menu-item>
           </el-menu>
@@ -80,6 +80,7 @@ import LayoutTagsView from "../components/LayoutTagsView.vue";
 import LayoutMain from "../components/LayoutMain.vue";
 import LayoutSidebarItem from "../components/LayoutSidebarItem.vue";
 import LayoutMenuIcon from "../components/LayoutMenuIcon.vue";
+import { translateRouteTitle } from "@/lang/utils";
 import variables from "@/styles/variables.module.scss";
 const { width } = useWindowSize();
 

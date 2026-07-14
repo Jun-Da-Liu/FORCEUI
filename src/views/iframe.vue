@@ -1,12 +1,13 @@
 <template>
   <div class="iframe-page">
     <iframe v-if="iframeUrl" :src="iframeUrl" :title="iframeTitle" />
-    <el-empty v-else description="未配置内嵌页面地址" />
+    <el-empty v-else :description="t('iframe.missingUrl')" />
   </div>
 </template>
 
 <script setup>
 const route = useRoute();
+const { t } = useI18n();
 
 const iframeUrl = computed(() => {
   const url = route.meta.externalUrl;

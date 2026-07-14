@@ -5,6 +5,9 @@ import { useUserStoreHook } from "@/stores/user";
 import { usePermissionStoreHook } from "@/stores/permission";
 import { AuthStorage, redirectToLogin } from "@/utils/auth";
 import { ElMessage } from "element-plus";
+import i18n from "@/lang";
+
+const translate = (key) => i18n.global.t(key);
 
 // 记录已重试的请求，防止无限循环
 const retriedConfigs = new WeakSet();
@@ -54,15 +57,15 @@ http.interceptors.response.use(
       return Promise.reject({ code, data, msg });
     }
 
-    ElMessage.error(msg || "系统出错");
-    return Promise.reject(new Error(msg || "系统出错"));
+    ElMessage.error(msg || translate("request.systemError"));
+    return Promise.reject(new Error(msg || translate("request.systemError")));
   },
 
   async (error) => {
     const { config, response } = error;
 
     if (!response) {
-      ElMessage.error("网络连接失败");
+      ElMessage.error(translate("request.networkError"));
       return Promise.reject(error);
     }
 
@@ -72,7 +75,7 @@ http.interceptors.response.use(
     if (code === ApiCodeEnum.ACCESS_TOKEN_INVALID) {
       // 已重试过，直接跳登录
       if (retriedConfigs.has(config)) {
-        await redirectToLogin("登录已过期，请重新登录", false);
+        await redirectToLogin(translate("request.loginExpired"), false);
       }
 
       retriedConfigs.add(config);
@@ -88,14 +91,14 @@ http.interceptors.response.use(
 
         return http(config);
       } catch {
-        await redirectToLogin("登录已过期，请重新登录");
+        await redirectToLogin(translate("request.loginExpired"));
         return Promise.reject(new Error("Token refresh failed"));
       }
     }
 
     // Refresh token 失效：无法续期，跳转登录
     if (code === ApiCodeEnum.REFRESH_TOKEN_INVALID) {
-      await redirectToLogin("登录已过期，请重新登录", false);
+      await redirectToLogin(translate("request.loginExpired"), false);
       return Promise.reject(new Error(msg || "Token Invalid"));
     }
 
@@ -103,12 +106,12 @@ http.interceptors.response.use(
     if (code === ApiCodeEnum.PERMISSION_DENIED) {
       const permissionStore = usePermissionStoreHook();
       await permissionStore.reloadPermissionSnapshotOnce();
-      ElMessage.error(msg || "权限不足");
-      return Promise.reject(new Error(msg || "权限不足"));
+      ElMessage.error(msg || translate("request.permissionDenied"));
+      return Promise.reject(new Error(msg || translate("request.permissionDenied")));
     }
 
-    ElMessage.error(msg || "请求失败");
-    return Promise.reject(new Error(msg || "请求失败"));
+    ElMessage.error(msg || translate("request.failed"));
+    return Promise.reject(new Error(msg || translate("request.failed")));
   }
 );
 

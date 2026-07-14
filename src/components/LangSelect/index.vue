@@ -32,6 +32,7 @@ defineProps({
 const langOptions = [
   { label: "中文", value: LanguageEnum.ZH_CN },
   { label: "English", value: LanguageEnum.EN },
+  { label: "Tiếng Việt", value: LanguageEnum.VI },
 ];
 
 const appStore = useAppStore();
@@ -40,7 +41,7 @@ const { locale, t } = useI18n();
 /**
  * 处理语言切换
  *
- * @param lang  语言（zh-cn、en）
+ * @param lang  语言（zh-cn、en、vi）
  */
 function handleLanguageChange(lang) {
   locale.value = lang;

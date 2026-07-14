@@ -20,6 +20,12 @@ export const useUserStore = defineStore("user", () => {
    */
   async function login(loginRequest) {
     const { accessToken, refreshToken } = await AuthAPI.login(loginRequest);
+
+    // Always rebuild the authenticated session after a successful login.
+    // This prevents stale in-memory routes from blocking the first navigation.
+    usePermissionStoreHook().resetRouter();
+    userInfo.value = {};
+
     rememberMe.value = loginRequest.rememberMe ?? false;
     AuthStorage.setTokens(accessToken, refreshToken, rememberMe.value);
   }
@@ -57,7 +63,8 @@ export const useUserStore = defineStore("user", () => {
    * 登出
    */
   async function logout() {
-    await AuthAPI.logout();
+    // The backend logout endpoint is not available yet.
+    // Clearing the local session is sufficient for the current token flow.
     resetAllState();
   }
 

@@ -73,7 +73,7 @@
               :src="captchaBase64"
               alt="code"
             />
-            <el-text v-else type="info" size="small">点击获取验证码</el-text>
+            <el-text v-else type="info" size="small">{{ t("login.clickCaptcha") }}</el-text>
           </div>
         </div>
       </el-form-item>
@@ -196,6 +196,6 @@ function checkCapsLock(event) {
 
 const submit = async () => {
   await formRef.value?.validate();
-  ElMessage.warning("开发中 ...");
+  ElMessage.warning(t("common.developing"));
 };
 </script>

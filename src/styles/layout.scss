@@ -5,7 +5,8 @@
 .el-menu--popup {
   .el-menu-item,
   .el-sub-menu__title {
-    .layout-menu-icon {
+    .layout-menu-icon,
+    .menu-node-icon {
       display: inline-flex;
       flex-shrink: 0;
       align-items: center;
@@ -17,6 +18,11 @@
       font-size: 18px;
       line-height: 18px;
       color: currentcolor !important;
+
+      svg {
+        width: 100%;
+        height: 100%;
+      }
     }
 
     .layout-menu-icon--element {
@@ -119,6 +125,17 @@
         span:not(.layout-menu-icon):not(.el-icon) {
           display: none !important;
         }
+      }
+    }
+
+    .layout-sidebar .el-menu--collapse {
+      .el-menu-item > span,
+      .el-sub-menu__title span:not(.layout-menu-icon):not(.el-icon) {
+        display: none !important;
+      }
+
+      .el-sub-menu__icon-arrow {
+        display: none !important;
       }
     }
   }

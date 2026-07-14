@@ -1,10 +1,10 @@
 import { createI18n } from "vue-i18n";
-import { useAppStoreHook } from "@/stores/app";
+import { STORAGE_KEYS } from "@/constants";
+import { Storage } from "@/utils/storage";
 // 本地语言包
 import enLocale from "./package/en";
+import viLocale from "./package/vi";
 import zhCnLocale from "./package/zh-cn";
-
-const appStore = useAppStoreHook();
 
 const messages = {
   "zh-cn": {
@@ -13,11 +13,17 @@ const messages = {
   en: {
     ...enLocale,
   },
+  vi: {
+    ...viLocale,
+  },
 };
+
+const savedLocale = Storage.get(STORAGE_KEYS.LANGUAGE, "zh-cn");
+const initialLocale = Object.hasOwn(messages, savedLocale) ? savedLocale : "zh-cn";
 
 const i18n = createI18n({
   legacy: false,
-  locale: appStore.language,
+  locale: initialLocale,
   messages,
   globalInjection: true,
 });

@@ -13,6 +13,8 @@ import { setupI18n } from "@/lang";
 import * as ElementPlusIcons from "@element-plus/icons-vue";
 import { setupPermissionGuard } from "@/router/guards/permission";
 import { setupSse } from "@/composables";
+import { appConfig } from "@/settings";
+import { setupSessionTimeout } from "@/utils/session-timeout";
 
 const app = createApp(App);
 
@@ -24,6 +26,9 @@ setupStore(app);
 Object.entries(ElementPlusIcons).forEach(([name, comp]) => app.component(name, comp));
 
 setupPermissionGuard();
-setupSse();
+setupSessionTimeout();
+if (appConfig.sseEnabled) {
+  setupSse();
+}
 
 app.mount("#app");

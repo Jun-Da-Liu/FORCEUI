@@ -65,6 +65,11 @@ export const appConfig = {
 
   // 功能开关
   tenantEnabled: env.VITE_APP_TENANT_ENABLED === "true",
+  sseEnabled: env.VITE_APP_SSE_ENABLED === "true",
+  noticeEnabled: env.VITE_APP_NOTICE_ENABLED === "true",
+  analyticsEnabled: env.VITE_APP_ANALYTICS_ENABLED === "true",
+  idleTimeoutMinutes: Number(env.VITE_APP_IDLE_TIMEOUT_MINUTES) || 30,
+  profileEditEnabled: env.VITE_APP_PROFILE_EDIT_ENABLED === "true",
 };
 
 export const defaults = {

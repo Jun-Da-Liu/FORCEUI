@@ -9,7 +9,7 @@ const UserAPI = {
    */
   getInfo() {
     return request({
-      url: `${USER_BASE_URL}/me`,
+      url: "/api/v1/auth/me",
       method: "get",
     });
   },

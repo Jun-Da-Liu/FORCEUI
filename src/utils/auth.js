@@ -2,6 +2,7 @@ import { Storage } from "./storage";
 import { STORAGE_KEYS, ROLE_ROOT } from "@/constants";
 import { useUserStoreHook } from "@/stores/user";
 import router from "@/router";
+import i18n from "@/lang";
 
 // ============================================
 // Token 存储管理
@@ -24,6 +25,7 @@ export const AuthStorage = {
 
   setTokens(accessToken, refreshToken, rememberMe) {
     Storage.set(STORAGE_KEYS.REMEMBER_ME, rememberMe);
+    Storage.set(STORAGE_KEYS.LAST_ACTIVITY, Date.now());
     if (rememberMe) {
       Storage.set(STORAGE_KEYS.ACCESS_TOKEN, accessToken);
       Storage.set(STORAGE_KEYS.REFRESH_TOKEN, refreshToken);
@@ -33,6 +35,7 @@ export const AuthStorage = {
       Storage.remove(STORAGE_KEYS.ACCESS_TOKEN);
       Storage.remove(STORAGE_KEYS.REFRESH_TOKEN);
     }
+    window.dispatchEvent(new Event("auth-session-changed"));
   },
 
   clearAuth() {
@@ -40,6 +43,8 @@ export const AuthStorage = {
     Storage.remove(STORAGE_KEYS.REFRESH_TOKEN);
     Storage.sessionRemove(STORAGE_KEYS.ACCESS_TOKEN);
     Storage.sessionRemove(STORAGE_KEYS.REFRESH_TOKEN);
+    Storage.remove(STORAGE_KEYS.LAST_ACTIVITY);
+    window.dispatchEvent(new Event("auth-session-changed"));
   },
 
   getRememberMe() {
@@ -65,7 +70,7 @@ export function hasPerm(value, type = "button") {
   }
 
   // 超级管理员拥有所有权限
-  if (type === "button" && roles.includes(ROLE_ROOT)) {
+  if (type === "button" && (roles.includes(ROLE_ROOT) || perms.includes("*:*:*"))) {
     return true;
   }
 
@@ -86,13 +91,13 @@ export function hasPerm(value, type = "button") {
  */
 let redirectingToLogin = false;
 
-export async function redirectToLogin(message = "请重新登录", notify = true) {
+export async function redirectToLogin(message = i18n.global.t("session.signInAgain"), notify = true) {
   if (redirectingToLogin) return;
   redirectingToLogin = true;
 
   if (notify) {
     ElNotification({
-      title: "提示",
+      title: i18n.global.t("common.tip"),
       message,
       type: "warning",
       duration: 3000,

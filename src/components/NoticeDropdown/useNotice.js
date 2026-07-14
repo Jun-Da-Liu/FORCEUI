@@ -9,13 +9,16 @@ const NOTICE_REVOKE_EVENT = "notice-revoke";
 
 export function useNotice() {
   const { on } = useSse();
+  const { t } = useI18n();
 
   const list = ref([]);
   const unreadTotal = ref(0);
   const activeStatus = ref(0);
   const detail = ref(null);
   const dialogVisible = ref(false);
-  const emptyText = computed(() => (activeStatus.value === 0 ? "暂无未读消息" : "暂无已读消息"));
+  const emptyText = computed(() =>
+    activeStatus.value === 0 ? t("notice.noUnread") : t("notice.noRead")
+  );
 
   let stopSubscriptions = null;
 
@@ -51,10 +54,15 @@ export function useNotice() {
   }
 
   async function refresh() {
-    await Promise.all([
-      fetchList(),
-      activeStatus.value === 0 ? Promise.resolve() : fetchUnreadTotal(),
-    ]);
+    try {
+      await Promise.all([
+        fetchList(),
+        activeStatus.value === 0 ? Promise.resolve() : fetchUnreadTotal(),
+      ]);
+    } catch {
+      list.value = [];
+      unreadTotal.value = 0;
+    }
   }
 
   async function read(id) {
@@ -81,7 +89,7 @@ export function useNotice() {
     } else {
       await fetchList();
     }
-    ElMessage.success("已全部标记为已读");
+    ElMessage.success(t("notice.allReadSuccess"));
   }
 
   function goMore() {
@@ -115,7 +123,7 @@ export function useNotice() {
         }
 
         ElNotification({
-          title: "您收到一条新的通知消息！",
+          title: t("notice.newNotice"),
           message: data.title,
           type: "success",
           position: "bottom-right",

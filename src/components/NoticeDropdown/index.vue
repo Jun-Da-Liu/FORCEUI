@@ -17,7 +17,7 @@
             :class="['notice__tab', { 'is-active': activeStatus === 0 }]"
             @click.stop="switchStatus(0)"
           >
-            <span>未读</span>
+            <span>{{ t("notice.unread") }}</span>
             <span v-if="unreadTotal > 0" class="notice__count">
               {{ unreadTotal > 99 ? "99+" : unreadTotal }}
             </span>
@@ -27,7 +27,7 @@
             :class="['notice__tab', { 'is-active': activeStatus === 1 }]"
             @click.stop="switchStatus(1)"
           >
-            已读
+            {{ t("notice.read") }}
           </button>
         </div>
 
@@ -54,13 +54,13 @@
         <el-divider class="notice__divider" />
         <div class="notice__footer">
           <el-link type="primary" underline="never" @click="goMore">
-            <span class="text-xs">查看更多</span>
+            <span class="text-xs">{{ t("notice.viewMore") }}</span>
             <el-icon class="text-xs">
               <ArrowRight />
             </el-icon>
           </el-link>
           <el-link v-if="unreadTotal > 0" type="primary" underline="never" @click="readAll">
-            <span class="text-xs">全部已读</span>
+            <span class="text-xs">{{ t("notice.markAllRead") }}</span>
           </el-link>
         </div>
       </div>
@@ -69,7 +69,7 @@
 
   <el-dialog
     v-model="dialogVisible"
-    :title="detail?.title ?? '通知详情'"
+    :title="detail?.title ?? t('notice.detail')"
     width="800px"
     custom-class="notification-detail"
   >
@@ -94,6 +94,8 @@
 
 <script setup>
 import { useNotice } from "./useNotice";
+
+const { t } = useI18n();
 
 const {
   list,

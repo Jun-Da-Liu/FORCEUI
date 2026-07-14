@@ -1,5 +1,5 @@
 <template>
-  <div class="layout" :class="layoutClass">
+  <div class="layout layout-root" :class="layoutClass">
     <!-- 移动端遮罩层 -->
     <div v-if="isMobile && isSidebarOpen" class="layout__overlay" @click="closeSidebar" />
 

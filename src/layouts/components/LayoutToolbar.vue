@@ -23,7 +23,7 @@
       </div>
 
       <!-- 通知 -->
-      <div class="navbar-actions__item">
+      <div v-if="appConfig.noticeEnabled" class="navbar-actions__item">
         <NoticeDropdown />
       </div>
 
@@ -37,13 +37,9 @@
     <div class="navbar-actions__item">
       <el-dropdown trigger="click">
         <div class="user-profile">
-          <div style="width: 28px; height: 28px; overflow: hidden; border-radius: 50%">
-            <img
-              :src="userStore.userInfo.avatar"
-              class="user-profile__avatar"
-              style="width: 100%; height: 100%; object-fit: cover; object-position: center"
-            />
-          </div>
+          <el-avatar :size="28" :src="displayAvatar" class="user-profile__avatar">
+            <el-icon><UserFilled /></el-icon>
+          </el-avatar>
           <span class="user-profile__name">{{ userStore.userInfo.username }}</span>
         </div>
         <template #dropdown>
@@ -68,7 +64,7 @@
 
 <script setup>
 import { useRoute, useRouter } from "vue-router";
-import { defaults } from "@/settings";
+import { appConfig, defaults } from "@/settings";
 import { DeviceEnum, SidebarColor, ThemeMode, LayoutMode } from "@/enums/settings";
 import { useAppStore, useSettingsStore, useUserStore } from "@/stores";
 
@@ -80,6 +76,7 @@ import LangSelect from "@/components/LangSelect/index.vue";
 import NoticeDropdown from "@/components/NoticeDropdown/index.vue";
 import TenantSwitcher from "@/components/TenantSwitcher/index.vue";
 import { useTenantStoreHook } from "@/stores/tenant";
+import { UserFilled } from "@element-plus/icons-vue";
 
 const { t } = useI18n();
 const appStore = useAppStore();
@@ -103,14 +100,19 @@ const showTenantSwitcher = computed(() => {
   return tenantStore.tenantList.length > 1;
 });
 
+const displayAvatar = computed(() => {
+  const avatar = userStore.userInfo.avatar;
+  return typeof avatar === "string" ? avatar.trim() : "";
+});
+
 function handleTenantChange(tenantId) {
   tenantStore.switchTenant(tenantId).then(
     () => {
-      ElMessage.success("切换租户成功");
+      ElMessage.success(t("toolbar.tenantSwitchSuccess"));
       window.location.href = "/";
     },
     (error) => {
-      ElMessage.error(error.message || "切换租户失败");
+      ElMessage.error(error.message || t("toolbar.tenantSwitchFailed"));
     }
   );
 }
@@ -151,19 +153,22 @@ const navbarActionsClass = computed(() => {
 /**
  * 退出登录
  */
-function logout() {
-  ElMessageBox.confirm("确定注销并退出系统吗？", "提示", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: "warning",
-    lockScroll: false,
-  }).then(() => {
-    userStore.logout().then(() => {
-      // 若当前已在 404/401 等错误页，退出后不再跳回错误页
-      const redirect = ["/404", "/401"].includes(route.path) ? "/" : route.fullPath;
-      router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
+async function logout() {
+  try {
+    await ElMessageBox.confirm(t("toolbar.logoutConfirm"), t("common.tip"), {
+      confirmButtonText: t("settings.confirm"),
+      cancelButtonText: t("settings.cancel"),
+      type: "warning",
+      lockScroll: false,
     });
-  });
+  } catch {
+    return;
+  }
+
+  await userStore.logout();
+  // 若当前已在 404/401 等错误页，退出后不再跳回错误页
+  const redirect = ["/404", "/401"].includes(route.path) ? "/" : route.fullPath;
+  await router.replace(`/login?redirect=${encodeURIComponent(redirect)}`);
 }
 
 /**

@@ -25,13 +25,13 @@
             <span class="i-svg:gitcode" />
             <span>GitCode</span>
           </a>
-          <a href="https://juejin.cn/post/7228990409909108793" target="_blank" title="文档" class="quick-link">
+          <a href="https://juejin.cn/post/7228990409909108793" target="_blank" :title="t('navbar.document')" class="quick-link">
             <el-icon><Document /></el-icon>
-            <span>文档</span>
+            <span>{{ t("navbar.document") }}</span>
           </a>
-          <a href="https://www.bilibili.com/video/BV1eFUuYyEFj" target="_blank" title="视频" class="quick-link">
+          <a href="https://www.bilibili.com/video/BV1eFUuYyEFj" target="_blank" :title="t('dashboard.video')" class="quick-link">
             <el-icon><VideoPlay /></el-icon>
-            <span>视频</span>
+            <span>{{ t("dashboard.video") }}</span>
           </a>
         </div>
       </div>
@@ -43,11 +43,11 @@
           <el-icon :size="18"><Connection /></el-icon>
         </div>
         <div class="stat-card__body">
-          <span class="stat-card__label">在线用户</span>
+          <span class="stat-card__label">{{ t("dashboard.onlineUsers") }}</span>
           <span class="stat-card__num">{{ onlineUserCount }}</span>
         </div>
         <span :class="['stat-card__badge', isConnected ? 'stat-card__badge--on' : 'stat-card__badge--off']">
-          {{ isConnected ? "实时" : "离线" }}
+          {{ isConnected ? t("dashboard.realtime") : t("dashboard.offline") }}
         </span>
       </div>
 
@@ -56,7 +56,7 @@
           <el-icon :size="18"><User /></el-icon>
         </div>
         <div class="stat-card__body">
-          <span class="stat-card__label">今日访客</span>
+          <span class="stat-card__label">{{ t("dashboard.todayVisitors") }}</span>
           <span class="stat-card__num">{{ displayTransitionUvCount }}</span>
         </div>
         <span v-if="uvGrowthText !== '--'" :class="['stat-card__trend', `stat-card__trend--${uvTrendTone}`]">
@@ -73,7 +73,7 @@
           <el-icon :size="18"><View /></el-icon>
         </div>
         <div class="stat-card__body">
-          <span class="stat-card__label">今日浏览量</span>
+          <span class="stat-card__label">{{ t("dashboard.todayViews") }}</span>
           <span class="stat-card__num">{{ displayTransitionPvCount }}</span>
         </div>
         <span v-if="pvGrowthText !== '--'" :class="['stat-card__trend', `stat-card__trend--${pvTrendTone}`]">
@@ -90,7 +90,7 @@
           <span class="stat-card__svg i-svg:group" />
         </div>
         <div class="stat-card__body">
-          <span class="stat-card__label">系统用户</span>
+          <span class="stat-card__label">{{ t("dashboard.systemUsers") }}</span>
           <span class="stat-card__num">6</span>
         </div>
         <span :class="['stat-card__trend', `stat-card__trend--${systemTrendTone}`]">
@@ -103,10 +103,10 @@
     <section class="dash-chart">
       <div class="card dash-chart__trend">
         <div class="card__head">
-          <h3 class="card__title">访问趋势</h3>
+          <h3 class="card__title">{{ t("dashboard.visitTrend") }}</h3>
           <el-radio-group v-model="visitTrendDateRange" size="small">
-            <el-radio-button label="近7天" :value="7" />
-            <el-radio-button label="近30天" :value="30" />
+            <el-radio-button :label="t('dashboard.last7Days')" :value="7" />
+            <el-radio-button :label="t('dashboard.last30Days')" :value="30" />
           </el-radio-group>
         </div>
         <div class="card__body card__body--chart">
@@ -116,8 +116,8 @@
 
       <div class="card dash-chart__overview">
         <div class="card__head">
-          <h3 class="card__title">待办概览</h3>
-          <el-tag type="primary" size="small" effect="plain">5 项待处理</el-tag>
+          <h3 class="card__title">{{ t("dashboard.todoOverview") }}</h3>
+          <el-tag type="primary" size="small" effect="plain">{{ t("dashboard.pendingItems", { count: 5 }) }}</el-tag>
         </div>
         <div class="card__body overview-card">
           <div class="overview-summary">
@@ -133,7 +133,7 @@
                   <span class="overview-bars__dot" />
                   {{ item.label }}
                 </span>
-                <span class="overview-bars__value">{{ item.value }} 项</span>
+                <span class="overview-bars__value">{{ item.value }}</span>
               </div>
               <span class="overview-bars__track">
                 <span class="overview-bars__bar" />
@@ -147,8 +147,8 @@
     <section class="dash-bottom">
       <div class="card">
         <div class="card__head">
-          <h3 class="card__title">待办事项</h3>
-          <el-tag size="small" round>5 项</el-tag>
+          <h3 class="card__title">{{ t("dashboard.todoItems") }}</h3>
+          <el-tag size="small" round>{{ t("dashboard.pendingItems", { count: 5 }) }}</el-tag>
         </div>
         <div class="card__body">
           <div v-for="todo in todoItems" :key="todo.id" class="todo-row" :class="{ 'todo-row--done': todo.done }">
@@ -157,7 +157,7 @@
               <Clock v-else />
             </el-icon>
             <span class="todo-row__title">{{ todo.title }}</span>
-            <el-tag :type="todo.done ? 'success' : todo.tag === '工单' ? 'warning' : 'info'" size="small" effect="plain" class="todo-row__tag">
+            <el-tag :type="todo.tone" size="small" effect="plain" class="todo-row__tag">
               {{ todo.tag }}
             </el-tag>
             <span class="todo-row__time">{{ todo.time }}</span>
@@ -167,7 +167,7 @@
 
       <div class="card">
         <div class="card__head">
-          <h3 class="card__title">系统动态</h3>
+          <h3 class="card__title">{{ t("dashboard.systemActivity") }}</h3>
         </div>
         <div class="card__body card__body--scroll">
           <div class="feed">
@@ -197,56 +197,58 @@ import {
   User, Connection, View, ArrowUp, ArrowDown, Clock, CircleCheck, Document, VideoPlay,
 } from "@element-plus/icons-vue";
 import { useOnlineCount } from "@/composables";
+import { appConfig } from "@/settings";
 
 const userStore = useUserStore();
 const settingsStore = useSettingsStore();
-const { onlineUserCount, isConnected } = useOnlineCount();
+const { t, locale } = useI18n();
+const { onlineUserCount, isConnected } = useOnlineCount({ autoInit: appConfig.sseEnabled });
 
 const hours = new Date().getHours();
 const greetings = computed(() => {
   const n = userStore.userInfo.nickname;
-  if (hours >= 6 && hours < 8) return `早安，${n}`;
-  if (hours >= 8 && hours < 12) return `上午好，${n}`;
-  if (hours >= 12 && hours < 18) return `下午好，${n}`;
-  if (hours >= 18 && hours < 24) return `晚上好，${n}`;
-  return `夜深了，${n}`;
+  if (hours >= 6 && hours < 8) return t("dashboard.morningEarly", { name: n });
+  if (hours >= 8 && hours < 12) return t("dashboard.morning", { name: n });
+  if (hours >= 12 && hours < 18) return t("dashboard.afternoon", { name: n });
+  if (hours >= 18 && hours < 24) return t("dashboard.evening", { name: n });
+  return t("dashboard.lateNight", { name: n });
 });
 
 const currentDateStr = computed(() => {
   const d = new Date();
-  const w = ["日", "一", "二", "三", "四", "五", "六"];
-  return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日 星期${w[d.getDay()]}`;
+  const language = locale.value === "en" ? "en-US" : "zh-CN";
+  return new Intl.DateTimeFormat(language, { dateStyle: "full" }).format(d);
 });
 
-const todoItems = [
-  { id: 1, title: "审批：张三提交的请假申请", tag: "审批", time: "10分钟前", done: false },
-  { id: 2, title: "审核：新用户注册信息核实", tag: "审核", time: "30分钟前", done: false },
-  { id: 3, title: "发布：系统维护通知公告", tag: "通知", time: "1小时前", done: false },
-  { id: 4, title: "处理：工单 #TSK-20240509", tag: "工单", time: "2小时前", done: false },
-  { id: 5, title: "更新：用户角色权限配置", tag: "配置", time: "昨天 15:30", done: true },
-];
+const todoItems = computed(() => [
+  { id: 1, title: t("dashboard.todoLeave"), tag: t("dashboard.approval"), time: t("dashboard.minutesAgo", { count: 10 }), done: false, tone: "info" },
+  { id: 2, title: t("dashboard.todoUserReview"), tag: t("dashboard.review"), time: t("dashboard.minutesAgo", { count: 30 }), done: false, tone: "info" },
+  { id: 3, title: t("dashboard.todoPublishNotice"), tag: t("dashboard.notice"), time: t("dashboard.hoursAgo", { count: 1 }), done: false, tone: "info" },
+  { id: 4, title: t("dashboard.todoTicket"), tag: t("dashboard.ticket"), time: t("dashboard.hoursAgo", { count: 2 }), done: false, tone: "warning" },
+  { id: 5, title: t("dashboard.todoRoleUpdate"), tag: t("settings.configManagement"), time: t("dashboard.yesterdayAt", { time: "15:30" }), done: true, tone: "success" },
+]);
 
-const activities = [
-  { id: 1, content: "管理员 admin 登录系统", time: "3分钟前" },
-  { id: 2, content: "新增用户李四，角色为普通用户", time: "25分钟前" },
-  { id: 3, content: "系统配置项「登录策略」已更新", time: "1小时前" },
-  { id: 4, content: "数据库自动备份任务执行完成", time: "3小时前" },
-  { id: 5, content: "角色权限批量修改：运营组新增导出权限", time: "昨天 16:42" },
-  { id: 6, content: "SSL 证书已自动续期", time: "昨天 09:15" },
-];
+const activities = computed(() => [
+  { id: 1, content: t("dashboard.activityLogin"), time: t("dashboard.minutesAgo", { count: 3 }) },
+  { id: 2, content: t("dashboard.activityUserAdded"), time: t("dashboard.minutesAgo", { count: 25 }) },
+  { id: 3, content: t("dashboard.activityPolicyUpdated"), time: t("dashboard.hoursAgo", { count: 1 }) },
+  { id: 4, content: t("dashboard.activityBackup"), time: t("dashboard.hoursAgo", { count: 3 }) },
+  { id: 5, content: t("dashboard.activityPermissions"), time: t("dashboard.yesterdayAt", { time: "16:42" }) },
+  { id: 6, content: t("dashboard.activityCertificate"), time: t("dashboard.yesterdayAt", { time: "09:15" }) },
+]);
 
-const todoOverviewItems = [
-  { label: "审批", value: "2", percent: 40 },
-  { label: "审核", value: "1", percent: 20 },
-  { label: "通知", value: "1", percent: 20 },
-  { label: "工单", value: "1", percent: 20 },
-];
+const todoOverviewItems = computed(() => [
+  { label: t("dashboard.approval"), value: "2", percent: 40 },
+  { label: t("dashboard.review"), value: "1", percent: 20 },
+  { label: t("dashboard.notice"), value: "1", percent: 20 },
+  { label: t("dashboard.ticket"), value: "1", percent: 20 },
+]);
 
-const todoSummaryItems = [
-  { label: "今日新增", value: "3" },
-  { label: "即将超时", value: "1" },
-  { label: "今日完成", value: "1" },
-];
+const todoSummaryItems = computed(() => [
+  { label: t("dashboard.todayAdded"), value: "3" },
+  { label: t("dashboard.nearlyOverdue"), value: "1" },
+  { label: t("dashboard.completedToday"), value: "1" },
+]);
 
 const visitOverviewData = ref({
   todayUvCount: 0, uvGrowthRate: 0, totalUvCount: 0,
@@ -325,23 +327,31 @@ function updateVisitTrendChartOptions(d) {
 
   visitTrendChartOptions.value = {
     tooltip: { trigger: "axis", borderWidth: 0, padding: [8, 12], extraCssText: "box-shadow: var(--el-box-shadow-light); border-radius: 6px;" },
-    legend: { data: ["浏览量", "访客量"], bottom: 0, textStyle: { fontSize: 12, color: textSecondary }, itemWidth: 10, itemHeight: 8, itemGap: 24 },
+    legend: { data: [t("dashboard.pageViews"), t("dashboard.visitors")], bottom: 0, textStyle: { fontSize: 12, color: textSecondary }, itemWidth: 10, itemHeight: 8, itemGap: 24 },
     grid: { left: "0%", right: "3%", bottom: "14%", top: "5%", containLabel: true },
     xAxis: { type: "category", data: d.dates, axisTick: { show: false }, axisLine: { lineStyle: { color: colorWithAlpha(borderLighter, 0.82) } }, axisLabel: { fontSize: 11, color: textSecondary }, splitLine: { show: false } },
     yAxis: { type: "value", axisLine: { show: false }, axisTick: { show: false }, splitLine: { lineStyle: { type: "dashed", color: gridLine, width: 1 } }, axisLabel: { fontSize: 11, color: textSecondary } },
     series: [
-      { name: "浏览量", type: "line", data: d.pvList, smooth: true, symbol: "circle", symbolSize: 5, showSymbol: false, lineStyle: { color: primary, width: 2.2 }, itemStyle: { color: primary }, areaStyle: { opacity: 1, color: { type: "linear", x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: colorWithAlpha(primary, 0.18) }, { offset: 0.52, color: colorWithAlpha(primary, 0.08) }, { offset: 1, color: colorWithAlpha(primary, 0.01) }] } } },
-      { name: "访客量", type: "line", data: d.uvList, smooth: true, symbol: "circle", symbolSize: 5, showSymbol: false, lineStyle: { color: colorWithAlpha(success, 0.9), width: 1.8, opacity: 0.86 }, itemStyle: { color: success }, areaStyle: { color: { type: "linear", x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: colorWithAlpha(success, 0.08) }, { offset: 1, color: colorWithAlpha(success, 0) }] } } },
+      { name: t("dashboard.pageViews"), type: "line", data: d.pvList, smooth: true, symbol: "circle", symbolSize: 5, showSymbol: false, lineStyle: { color: primary, width: 2.2 }, itemStyle: { color: primary }, areaStyle: { opacity: 1, color: { type: "linear", x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: colorWithAlpha(primary, 0.18) }, { offset: 0.52, color: colorWithAlpha(primary, 0.08) }, { offset: 1, color: colorWithAlpha(primary, 0.01) }] } } },
+      { name: t("dashboard.visitors"), type: "line", data: d.uvList, smooth: true, symbol: "circle", symbolSize: 5, showSymbol: false, lineStyle: { color: colorWithAlpha(success, 0.9), width: 1.8, opacity: 0.86 }, itemStyle: { color: success }, areaStyle: { color: { type: "linear", x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: colorWithAlpha(success, 0.08) }, { offset: 1, color: colorWithAlpha(success, 0) }] } } },
     ],
   };
 }
 
-watch(() => visitTrendDateRange.value, () => fetchVisitTrendData(), { immediate: true });
-watch(() => [settingsStore.resolvedTheme, settingsStore.themeColors], () => {
+watch(
+  () => visitTrendDateRange.value,
+  () => {
+    if (appConfig.analyticsEnabled) fetchVisitTrendData();
+  },
+  { immediate: true }
+);
+watch(() => [settingsStore.resolvedTheme, settingsStore.themeColors, locale.value], () => {
   if (!visitTrendData.value) return;
   requestAnimationFrame(() => { if (visitTrendData.value) updateVisitTrendChartOptions(visitTrendData.value); });
 }, { deep: true });
-onMounted(() => { fetchVisitOverviewData(); });
+onMounted(() => {
+  if (appConfig.analyticsEnabled) fetchVisitOverviewData();
+});
 </script>
 
 <style lang="scss" scoped>

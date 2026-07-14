@@ -74,16 +74,16 @@ const MenuIcon = defineComponent({
 
     return () => {
       if (!props.icon) {
-        return h("div", { class: "i-svg:menu" });
+        return h("div", { class: "menu-node-icon i-svg:menu" });
       }
 
       // Element Plus 图标
       if (isElIcon.value) {
-        return h(ElIcon, null, () => h(resolveComponent(iconName.value)));
+        return h(ElIcon, { class: "menu-node-icon" }, () => h(resolveComponent(iconName.value)));
       }
 
       // SVG 图标
-      return h("div", { class: `i-svg:${props.icon}` });
+      return h("div", { class: `menu-node-icon i-svg:${props.icon}` });
     };
   },
 });
@@ -168,11 +168,25 @@ function resolvePath(routePath) {
 /* 菜单图标统一样式 */
 .el-menu-item,
 .el-sub-menu__title {
-  .el-icon {
-    width: 1em !important;
+  .el-icon,
+  .menu-node-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 18px !important;
+    min-width: 18px !important;
+    height: 18px !important;
     margin-right: 0 !important;
-    font-size: 18px;
+    font-size: 18px !important;
+    line-height: 18px;
     color: currentcolor;
+  }
+
+  .el-icon svg,
+  .menu-node-icon svg {
+    width: 100%;
+    height: 100%;
   }
 
   [class^="i-svg:"] {

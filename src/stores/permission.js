@@ -2,6 +2,8 @@ import { constantRoutes } from "@/router";
 import { store } from "@/stores";
 import router from "@/router";
 import { useUserStoreHook } from "@/stores/user";
+import i18n from "@/lang";
+import { ElMessageBox } from "element-plus";
 
 import MenuAPI from "@/api/system/menu";
 const modules = import.meta.glob("../views/**/**.vue");
@@ -15,7 +17,7 @@ function resolveViewComponent(componentPath) {
   return (
     modules[`../views/${normalized}.vue`] ||
     modules[`../views/${normalized}/index.vue`] ||
-    modules[`../views/error/404.vue`]
+    modules[`../views/dynamic-menu/index.vue`]
   );
 }
 
@@ -31,7 +33,7 @@ export const usePermissionStore = defineStore("permission", () => {
   async function generateRoutes() {
     try {
       const data = await MenuAPI.getRoutes(); // 获取当前登录人的菜单路由
-      const dynamicRoutes = transformRoutes(data);
+      const dynamicRoutes = transformRoutes(transformMenuNodes(data));
 
       routes.value = [...constantRoutes, ...dynamicRoutes];
       isRouteGenerated.value = true;
@@ -158,6 +160,121 @@ const transformRoutes = (routes, isTopLevel = true) => {
     return normalizedRoute;
   });
 };
+
+/**
+ * Convert the menu schema returned by /api/v1/menus/my to route records.
+ * nodeUrl is treated as both the browser path and the view component path.
+ */
+const CHILD_NODE_ICON = "el-icon-Document";
+const LOGOUT_NODE_ID = 1026;
+
+const parentNodeIcons = {
+  1001: "el-icon-Connection", // GroupID
+  1007: "el-icon-DataBoard", // SAP
+  1010: "el-icon-Van", // FUYU
+  1013: "el-icon-Stamp", // Customs
+  1014: "el-icon-Files", // Master Data
+  1022: "el-icon-Setting", // System
+  1026: "el-icon-SwitchButton", // Login Out
+  1040: "el-icon-DataAnalysis", // Report Search
+  1048: "el-icon-DocumentAdd", // Customs Registration
+  1107: "el-icon-Lock", // Customs_VCGL
+};
+
+const fallbackParentIcons = [
+  "el-icon-Folder",
+  "el-icon-Menu",
+  "el-icon-Grid",
+  "el-icon-Box",
+  "el-icon-Tickets",
+  "el-icon-Collection",
+];
+
+const transformMenuNodes = (nodes = [], isTopLevel = true) => {
+  return [...nodes]
+    .sort((a, b) => (a.nodeSort ?? 0) - (b.nodeSort ?? 0))
+    .map((node) => {
+      const children = transformMenuNodes(node.children || [], false);
+      const nodeUrl = normalizeNodeUrl(node.nodeUrl);
+      const fallbackPath = normalizePathSegment(node.nodeName) || `menu-${node.nodeId}`;
+      const path = nodeUrl ? `/${nodeUrl}` : isTopLevel ? `/${fallbackPath}` : fallbackPath;
+      const hasChildren = children.length > 0;
+      const isParentNode = isTopLevel || hasChildren;
+      const isLogoutNode = Number(node.nodeId) === LOGOUT_NODE_ID;
+
+      return {
+        path,
+        name: `Menu_${node.nodeId}`,
+        component: isTopLevel ? "Layout" : hasChildren ? undefined : nodeUrl,
+        redirect: hasChildren ? findFirstLeafPath(children) : undefined,
+        ...(isLogoutNode ? { beforeEnter: handleLogoutMenuAction } : {}),
+        meta: {
+          title: node.nodeName,
+          icon: isParentNode ? resolveParentNodeIcon(node.nodeId) : CHILD_NODE_ICON,
+          action: isLogoutNode ? "logout" : undefined,
+          alwaysShow: hasChildren,
+          keepAlive: false,
+        },
+        children,
+      };
+    });
+};
+
+async function handleLogoutMenuAction(_to, from) {
+  const { t } = i18n.global;
+
+  try {
+    await ElMessageBox.confirm(t("toolbar.logoutConfirm"), t("common.tip"), {
+      confirmButtonText: t("settings.confirm"),
+      cancelButtonText: t("settings.cancel"),
+      type: "warning",
+      lockScroll: false,
+    });
+  } catch {
+    return false;
+  }
+
+  await useUserStoreHook().logout();
+
+  const redirect = ["/404", "/401"].includes(from.path) ? "/" : from.fullPath;
+  return {
+    path: "/login",
+    query: { redirect },
+    replace: true,
+  };
+}
+
+function resolveParentNodeIcon(nodeId) {
+  if (parentNodeIcons[nodeId]) return parentNodeIcons[nodeId];
+
+  const numericNodeId = Number(nodeId);
+  const iconIndex = Number.isFinite(numericNodeId)
+    ? Math.abs(numericNodeId) % fallbackParentIcons.length
+    : 0;
+  return fallbackParentIcons[iconIndex];
+}
+
+function normalizeNodeUrl(nodeUrl = "") {
+  return nodeUrl.trim().replace(/^\/+|\/+$/g, "");
+}
+
+function normalizePathSegment(value = "") {
+  return value
+    .trim()
+    .replace(/\s+/g, "_")
+    .replace(/^\/+|\/+$/g, "");
+}
+
+function findFirstLeafPath(routes) {
+  for (const route of routes) {
+    if (route.children?.length) {
+      const childPath = findFirstLeafPath(route.children);
+      if (childPath) return childPath;
+    } else {
+      return route.path;
+    }
+  }
+}
 
 /** 非组件环境使用权限store */
 export function usePermissionStoreHook() {

@@ -102,7 +102,6 @@
 | 项目 0 到 1  | [基于 Vue3 + Vite + Element-Plus 从0到1搭建后台管理系统](https://blog.csdn.net/u013737132/article/details/130191394)               |
 | 官方文档     | [https://www.youlai.tech/vue3-element-admin/](https://www.youlai.tech/vue3-element-admin/)                                         |
 | 代码规范     | [ESLint V9 + Prettier + Stylelint + EditorConfig 约束和统一前端代码规范](https://youlai.blog.csdn.net/article/details/145608723)   |
-| Git 规范     | [Husky + Lint-staged + Commitlint + Commitizen + cz-git 配置 Git 提交规范](https://youlai.blog.csdn.net/article/details/145615236) |
 | 在线接口文档 | [https://www.apifox.cn/apidoc](https://www.apifox.cn/apidoc/shared-195e783f-4d85-4235-a038-eec696de4ea5)                           |
 
 ## 项目启动
@@ -169,8 +168,6 @@ server {
 更多详细信息，请参考这篇文章：[Nginx 安装和配置](https://blog.csdn.net/u013737132/article/details/145667694)。
 
 ## 本地Mock
-
-项目同时支持在线和本地 Mock 接口，默认使用线上接口，如需替换为 Mock 接口，修改文件 `.env.development` 的 `VITE_MOCK_DEV_SERVER` 为 `true` **即可**。
 
 ## 后端接口
 

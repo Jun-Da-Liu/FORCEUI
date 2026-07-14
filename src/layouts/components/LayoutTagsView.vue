@@ -65,37 +65,37 @@
               <el-icon :size="14" class="tags-actions__dropdown-icon">
                 <Refresh />
               </el-icon>
-              <span>刷新当前</span>
+              <span>{{ t("tagsView.refreshCurrent") }}</span>
             </el-dropdown-item>
             <el-dropdown-item v-if="currentTag && !currentTag.affix" command="closeCurrent">
               <el-icon :size="14" class="tags-actions__dropdown-icon">
                 <Close />
               </el-icon>
-              <span>关闭当前</span>
+              <span>{{ t("tagsView.closeCurrent") }}</span>
             </el-dropdown-item>
             <el-dropdown-item divided command="closeOthers">
               <el-icon :size="14" class="tags-actions__dropdown-icon">
                 <Remove />
               </el-icon>
-              <span>关闭其它</span>
+              <span>{{ t("tagsView.closeOthers") }}</span>
             </el-dropdown-item>
             <el-dropdown-item command="closeLeft">
               <el-icon :size="14" class="tags-actions__dropdown-icon">
                 <DArrowLeft />
               </el-icon>
-              <span>关闭左侧</span>
+              <span>{{ t("tagsView.closeLeft") }}</span>
             </el-dropdown-item>
             <el-dropdown-item command="closeRight">
               <el-icon :size="14" class="tags-actions__dropdown-icon">
                 <DArrowRight />
               </el-icon>
-              <span>关闭右侧</span>
+              <span>{{ t("tagsView.closeRight") }}</span>
             </el-dropdown-item>
             <el-dropdown-item divided command="closeAll">
               <el-icon :size="14" class="tags-actions__dropdown-icon">
                 <CircleClose />
               </el-icon>
-              <span>关闭所有</span>
+              <span>{{ t("tagsView.closeAll") }}</span>
             </el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -107,7 +107,7 @@
       <ul v-show="contextMenu.visible" class="contextmenu" :style="contextMenuStyle">
         <li @click="refreshSelectedTag(selectedTag)">
           <el-icon :size="16" class="contextmenu__icon"><Refresh /></el-icon>
-          <span>刷新</span>
+          <span>{{ t("tagsView.refresh") }}</span>
         </li>
         <li
           v-if="!selectedTag?.affix"
@@ -115,25 +115,25 @@
           @click="closeSelectedTag(selectedTag)"
         >
           <el-icon :size="16" class="contextmenu__icon"><Close /></el-icon>
-          <span>关闭</span>
+          <span>{{ t("tagsView.close") }}</span>
         </li>
         <li class="contextmenu__divider" />
         <li @click="closeOtherTags">
           <el-icon :size="16" class="contextmenu__icon"><Remove /></el-icon>
-          <span>关闭其它</span>
+          <span>{{ t("tagsView.closeOthers") }}</span>
         </li>
         <li v-if="!isFirstView" @click="closeLeftTags">
           <el-icon :size="16" class="contextmenu__icon"><DArrowLeft /></el-icon>
-          <span>关闭左侧</span>
+          <span>{{ t("tagsView.closeLeft") }}</span>
         </li>
         <li v-if="!isLastView" @click="closeRightTags">
           <el-icon :size="16" class="contextmenu__icon"><DArrowRight /></el-icon>
-          <span>关闭右侧</span>
+          <span>{{ t("tagsView.closeRight") }}</span>
         </li>
         <li class="contextmenu__divider" />
         <li @click="closeAllTags(selectedTag)">
           <el-icon :size="16" class="contextmenu__icon"><CircleClose /></el-icon>
-          <span>关闭所有</span>
+          <span>{{ t("tagsView.closeAll") }}</span>
         </li>
       </ul>
     </Teleport>
@@ -148,6 +148,7 @@ import { useAppStore, usePermissionStore, useTagsViewStore } from "@/stores";
 
 const router = useRouter();
 const route = useRoute();
+const { t } = useI18n();
 
 const appStore = useAppStore();
 const permissionStore = usePermissionStore();

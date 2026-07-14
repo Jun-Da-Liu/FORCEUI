@@ -14,18 +14,18 @@
             :key="item.path"
             class="layout-double__primary-item"
             :class="{ 'is-active': item.path === activeTopMenuPath }"
-            :title="item.meta?.title"
+            :title="translateRouteTitle(item.meta?.title || '')"
             type="button"
             @click="handleTopMenuSelect(item.path)"
           >
             <LayoutMenuIcon :icon="item.meta?.icon" />
-            <span v-if="item.meta?.title">{{ item.meta.title }}</span>
+            <span v-if="item.meta?.title">{{ translateRouteTitle(item.meta.title) }}</span>
           </button>
         </el-scrollbar>
 
         <button
           class="layout-double__primary-toggle"
-          :title="isSidebarOpen ? '收起菜单' : '展开菜单'"
+          :title="isSidebarOpen ? t('navbar.collapseMenu') : t('navbar.expandMenu')"
           type="button"
           @click="toggleSidebar"
         >
@@ -74,8 +74,10 @@ import LayoutTagsView from "../components/LayoutTagsView.vue";
 import LayoutMain from "../components/LayoutMain.vue";
 import LayoutSidebar from "../components/LayoutSidebar.vue";
 import LayoutMenuIcon from "../components/LayoutMenuIcon.vue";
+import { translateRouteTitle } from "@/lang/utils";
 
 const appStore = useAppStore();
+const { t } = useI18n();
 const { showTagsView, showLogo, isSidebarOpen, toggleSidebar } = useLayout();
 
 const { topMenuItems, activeTopMenuPath, sideMenuRoutes, handleTopMenuSelect } = useMixMenu();

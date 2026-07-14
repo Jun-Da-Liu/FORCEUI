@@ -49,6 +49,6 @@ const formRef = ref();
 
 const submit = async () => {
   await formRef.value?.validate();
-  ElMessage.warning("开发中 ...");
+  ElMessage.warning(t("common.developing"));
 };
 </script>

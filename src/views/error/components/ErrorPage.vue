@@ -62,10 +62,12 @@ const props = defineProps({
   variant: { type: String, required: true },
 });
 
+const { t } = useI18n();
+
 const visualIcon = computed(() => (props.variant === "locked" ? Lock : Search));
 const visualName = computed(() => (props.variant === "locked" ? "ACCESS CONTROL" : "ROUTE TRACE"));
 const visualMeta = computed(() =>
-  props.variant === "locked" ? "权限校验未通过" : "目标路由未匹配"
+  props.variant === "locked" ? t("errorPage.accessMeta") : t("errorPage.notFoundMeta")
 );
 </script>
 

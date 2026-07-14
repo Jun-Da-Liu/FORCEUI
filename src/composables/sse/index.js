@@ -6,7 +6,7 @@ export function setupSse() {
   const dictSync = useDictSync();
   dictSync.initialize();
 
-  const onlineCount = useOnlineCount();
+  const onlineCount = useOnlineCount({ autoInit: false });
   onlineCount.initialize();
 }
 
@@ -14,7 +14,7 @@ export function cleanupSseServices() {
   const dictSync = useDictSync();
   dictSync.cleanup();
 
-  const onlineCount = useOnlineCount();
+  const onlineCount = useOnlineCount({ autoInit: false });
   onlineCount.cleanup();
 
   cleanupSse();
